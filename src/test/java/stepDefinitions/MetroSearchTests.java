@@ -4,7 +4,7 @@ import driverUtils.DriverManagerFactory;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.testng.Assert;
+import org.junit.Assert;
 import steps.StepFactory;
 import steps.metro.MainPageSteps;
 import steps.metro.SearchResultPageSteps;
@@ -12,13 +12,13 @@ import steps.metro.SearchResultPageSteps;
 
 public class MetroSearchTests {
 
-    MainPageSteps mainPageSteps;// = StepFactory.getMainPageSteps(DriverManagerFactory.getInstance().getDriver());
-    SearchResultPageSteps searchResultPageSteps;// = StepFactory.getSearchResultPageSteps(DriverManagerFactory.getInstance().getDriver());
+    MainPageSteps mainPageSteps;
+    SearchResultPageSteps searchResultPageSteps;
 
 
-    @Given("Metro portal is opened without login")
-    public void openMetroPortalWithoutLogin() {
-        StepFactory stepFactory = new StepFactory(DriverManagerFactory.getInstance().getDriver());
+    @Given("Metro portal is opened")
+    public void openMetroPortal() {
+        StepFactory stepFactory = new StepFactory(DriverManagerFactory.getInstance().getManager().getDriver());
         mainPageSteps = stepFactory.getMainPageSteps();
         searchResultPageSteps = stepFactory.getSearchResultPageSteps();
         mainPageSteps.openShop();

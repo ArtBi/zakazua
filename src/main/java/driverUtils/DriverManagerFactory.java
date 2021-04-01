@@ -4,18 +4,14 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class DriverManagerFactory {
 
-    public static final String DRIVER_TYPE = "driver.type";
-    private static AbstractDriverManager driverManager;
+    public static final String DRIVER_TYPE = "test.driver.type";
+    private static ThreadLocal<DriverManagerFactory> driverManager = ThreadLocal.withInitial(DriverManagerFactory::new);
 
-
-    public static AbstractDriverManager getInstance() {
-        if(driverManager == null || !driverManager.isRunning()) {
-            driverManager = initDriverManager();
-        }
-        return driverManager;
+    public static DriverManagerFactory getInstance() {
+        return driverManager.get();
     }
 
-    private static AbstractDriverManager getManager(DriverType type) {
+    private AbstractDriverManager getManager(DriverType type) {
         switch (type) {
             case SELENOID_CHROME:
                 return new SelenoidDriverManager();
@@ -26,9 +22,11 @@ public class DriverManagerFactory {
         }
     }
 
-    private static AbstractDriverManager initDriverManager() {
+    public AbstractDriverManager getManager() {
+        //TODO : This parameter should be passed through jenkins and POM file in Future
         String driverType = System.getProperty(DRIVER_TYPE);
-        if(driverType!= null) {
+        System.out.println("Run the following driver: " + driverType);
+        if (driverType != null) {
             return getManager(DriverType.valueOf(driverType));
         }
         return getManager(DriverType.LOCAL_CHROME);
