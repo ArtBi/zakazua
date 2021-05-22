@@ -5,11 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>org.example</groupId>
-    <artifactId>zakaz</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>ua.zakaz</groupId>
+    <artifactId>web.automation</artifactId>
+    <version>1.1.0</version>
 
     <properties>
+        <test.driver.type>LOCAL_CHROME</test.driver.type>
+        <tags>--tags @SmokeTest</tags>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <selenium-java.version>3.141.59</selenium-java.version>
@@ -32,7 +35,7 @@
         <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-testng -->
         <dependency>
             <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-testng</artifactId>
+            <artifactId>cucumber-junit</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
         <dependency>
@@ -40,13 +43,14 @@
             <artifactId>cucumber-java</artifactId>
             <version>${cucumber.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.4.0</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 
@@ -56,10 +60,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>${project.basedir}/src/main/resources/testNg/RunMainFlow.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                    <argLine>-Dfile.encoding=UTF-8</argLine>
+                    <systemPropertyVariables>
+                        <test.driver.type>${test.driver.type}</test.driver.type>
+                    </systemPropertyVariables>
+                    <argLine>-Dcucumber.options="${tags}"</argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -69,7 +73,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <!--<encoding>${project.build.sourceEncoding}</encoding>-->
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>
